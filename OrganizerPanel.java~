@@ -26,6 +26,7 @@ public class OrganizerPanel extends JPanel{
   private int[][][] times;
   //private Course[] courseObjs;
   private GridBagConstraints c, mainC, radioC;
+  private Schedule mainSchedule;
   
   // Constructor
   public OrganizerPanel() {
@@ -47,6 +48,8 @@ public class OrganizerPanel extends JPanel{
     columnNames = new String[] {"","Mon", "Tues", "Wed", "Thurs", "Fri"};
     rowNames = new String[] {"8:30 - 9:40","9:50 - 11:00","11:10 - 12:20",
       "12:20 - 1:20", "1:30 - 2:40","2:50 - 4:00"};
+    
+    mainSchedule = new Schedule();
     
     c = new GridBagConstraints();
     mainC = new GridBagConstraints();
@@ -339,42 +342,39 @@ public class OrganizerPanel extends JPanel{
   }
   
   
-  private class Course{
-    String code, name, time, notes;
-    String [] days;
-    
-    public Course(String code, String name, String[] days, String time, String notes){
-      this.code = code;
-      this.name = name;
-      this.days = days;
-      this.time = time;
-      this.notes = notes;
-    }
-    
-    public String getCourseTitle(){
-      return code + ": " + name;
-    }
-    
-    public String toString(){
-      String result = code + " " + name + "\nTime: ";
-      for(String day: days){
-        result += day + ", ";
-      }
-      result += time + "\nNotes: " + notes;
-      return  result;
-    }
-  }
+//  private class Course{
+//    String code, name, time, notes;
+//    String [] days;
+//    
+//    public Course(String code, String name, String[] days, String time, String notes){
+//      this.code = code;
+//      this.name = name;
+//      this.days = days;
+//      this.time = time;
+//      this.notes = notes;
+//    }
+//    
+//    public String getCourseTitle(){
+//      return code + ": " + name;
+//    }
+//    
+//    public String toString(){
+//      String result = code + " " + name + "\nTime: ";
+//      for(String day: days){
+//        result += day + ", ";
+//      }
+//      result += time + "\nNotes: " + notes;
+//      return  result;
+//    }
+//  }
   
   
   //gets the course information and creates a Course object
-  //add course to courses String[] - DONE
-  //add sections to times int[][][] - DONE?
-  //add checkbox
   private void saveCourse(){
     String codeStr = code.getText();
     String nameStr = name.getText();
     
-    //get an exactly-sized list of which days were selected
+    //get an exactly-sized list of which days were selected (dayStrs)
     LinkedList<String> dayStrsTemp = new LinkedList<String>();
     Component[] comps = days.getComponents();
     for(int i=0; i<comps.length; i++){
@@ -389,7 +389,9 @@ public class OrganizerPanel extends JPanel{
     
     String timeStr = String.valueOf(timeOpts.getSelectedItem());
     String notesStr = notes.getText();
-    Course course = new Course(codeStr, nameStr, dayStrs, timeStr, notesStr);
+    
+    Course course = new Course(codeStr, nameStr, timeStr);
+    //Course course = new Course(codeStr, nameStr, dayStrs, timeStr, notesStr);
     System.out.println(course);
     
     //Add course name to courses[] since CheckBoxListener references it
@@ -398,22 +400,25 @@ public class OrganizerPanel extends JPanel{
     for(int i=0; i<courses.length; i++){
       tempCourses[i] = courses[i];
     }
-    tempCourses[courses.length] = course.getCourseTitle();
+    tempCourses[courses.length] = course.getName();
     courses = tempCourses;
     
     //Add meeting times based on day and times to times[]
-    int[][] sections = new int[dayStrs.length][];
-    for(int i=0; i< sections.length; i++){
-      sections[i] = new int[] {getRowIndex(timeStr), getColumnIndex(dayStrs[i])};
+//    int[][] sections = new int[dayStrs.length][];
+//    for(int i=0; i< sections.length; i++){
+//      sections[i] = new int[] {getRowIndex(timeStr), getColumnIndex(dayStrs[i])};
+//    }
+//    int[][][] tempTimes = new int[times.length + 1][][];
+//    for(int i=0; i<times.length; i++){
+//      tempTimes[i] = times[i];
+//    }
+//    tempTimes[times.length] = sections;
+//    times = tempTimes;
+    for(String day: dayStrs){
+      course.addMeeting(day);
     }
-    int[][][] tempTimes = new int[times.length + 1][][];
-    for(int i=0; i<times.length; i++){
-      tempTimes[i] = times[i];
-    }
-    tempTimes[times.length] = sections;
-    times = tempTimes;
     
-    JCheckBox checkbox = new JCheckBox(course.getCourseTitle());
+    JCheckBox checkbox = new JCheckBox(course.getName());
     checkbox.addItemListener(new CheckBoxListener(checkbox.getLabel()));
     checkbox.setSelected(true);
     list.add(checkbox,radioC);

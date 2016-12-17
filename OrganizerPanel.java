@@ -418,6 +418,8 @@ public class OrganizerPanel extends JPanel{
       course.addMeeting(day);
     }
     
+    mainSchedule.addCourse(course);
+    
     JCheckBox checkbox = new JCheckBox(course.getName());
     checkbox.addItemListener(new CheckBoxListener(checkbox.getLabel()));
     checkbox.setSelected(true);
