@@ -83,14 +83,6 @@ public class Course{
   }
   
   /**
-   * Returns the meeting list.
-   * @return the meeting list
-   */ 
-  public LinkedList<Meeting> getMeetings(){
-   return meetings;   
-  }
-  
-  /**
    * Adds a meeting to the list of meetings, and increases the number of meetings by 1.
    * If the meeting is already in the list, nothing is added.
    * @param day : the day the meeting takes place
@@ -186,8 +178,5 @@ public class Course{
     test2.addMeeting("Wednesday");
     test2.addMeeting("Thursday");
     System.out.println(test2);
-    
-    System.out.println("\nMeetings of MATH215:");
-    System.out.println(test2.getMeetings());
   }
 }
