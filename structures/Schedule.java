@@ -69,25 +69,25 @@ public class Schedule{
     String[] mwth = {"Monday", "Wednesday", "Thursday"};
     String[] tf = {"Tuesday", "Friday"};
     
-    Course cs230 = new Course("CS230", "Data Structures in Java", "9:50", tf);
+    Course cs230 = new Course("CS230", "Data Structures in Java", "9:50-11:10", tf);
     cs230.addMeeting("Tuesday");
     cs230.addMeeting("Friday");
     
-    Course math215 = new Course("MATH215", "Math for the Sciences I", "8:30", mwth);
+    Course math215 = new Course("MATH215", "Math for the Sciences I", "8:30-9:40", mwth);
     math215.addMeeting("Monday");
     math215.addMeeting("Wednesday");
     math215.addMeeting("Thursday");
     
-    Course phys107 = new Course("PHYS107", "Mechanics", "9:50", mwth);
+    Course phys107 = new Course("PHYS107", "Mechanics", "9:50-11:10", mwth);
     phys107.addMeeting("Monday");
     phys107.addMeeting("Wednesday");
     phys107.addMeeting("Thursday");
     
-    Course rel263 = new Course("REL263", "Islam in the Modern World", "8:30", tf);
+    Course rel263 = new Course("REL263", "Islam in the Modern World", "8:30-9:40", tf);
     rel263.addMeeting("Tuesday");
     rel263.addMeeting("Friday");
     
-    Course pol221 = new Course("POL3221", "World Politics", "11:10", tf);
+    Course pol221 = new Course("POL3221", "World Politics", "11:10-12:20", tf);
     pol221.addMeeting("Tuesday");
     pol221.addMeeting("Friday");
     

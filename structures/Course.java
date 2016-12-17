@@ -159,8 +159,8 @@ public class Course{
   public static void main(String[] args){
     String[] mwth = {"Monday", "Wednesday", "Thursday"};
     String[] tf = {"Tuesday", "Friday"};
-    Course test1 = new Course("CS230", "Data Structures in Java", "9:50", tf);
-    System.out.println("Creating a new object:\n" + test1 +"\n");
+    Course test1 = new Course("CS230", "Data Structures in Java", "9:50-11:10", tf);
+    System.out.println("Creating a new object:\n" + test1);
     
     System.out.println("\nAdding a meeting on Saturday:");
     test1.addMeeting("Saturday");
@@ -179,7 +179,7 @@ public class Course{
     System.out.println(test1);
     
     System.out.println("\nTesting constructor with notes");
-    Course test2 = new Course("MATH215", "Mathematics for the Sciences I", "8:30", mwth, "Prerequisites: MATH 116");
+    Course test2 = new Course("MATH215", "Mathematics for the Sciences I", "8:30-9:40", mwth, "Prerequisites: MATH 116");
     System.out.println(test2);
     
     System.out.println("\nMeetings of MATH215:");

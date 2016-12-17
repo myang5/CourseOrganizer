@@ -50,10 +50,10 @@ public class Meeting {
    * Main driver method for testing purposes 
    */ 
   public static void main(String[] args){
-    Meeting test1 = new Meeting("Wednesday", "8:30");
+    Meeting test1 = new Meeting("Wednesday", "8:30-9:40");
     System.out.println(test1); 
     
-    Meeting test2 = new Meeting("Thursday", "2:15");
+    Meeting test2 = new Meeting("Thursday", "2:50-4:00");
     System.out.println(test2);
   }
 }
