@@ -1,0 +1,138 @@
+/**
+ * Meeting.java
+ * Christina Buffo and Midori Yang
+ * Last updated: 11/27/2016
+ * CS230 Final Project
+ * Meeting objects are subclasses of the course that store
+ * information about the course name, meeting time, location, etc. along
+ * with the specific day the meeting occurs. The day that the meeting occurs
+ * must be specified in the constructor, and cannot be changed.
+ */
+public class Meeting {
+  
+  private String day;
+  private String deptNum; // department and number e.g. CS230
+  private String name;
+  private String start;
+  private String end;
+  private String prof;
+  
+  /**
+   * Constructor for Meeting class.
+   * @param day : the day the meeting occurs
+   */ 
+  public Meeting(String day){
+    this.day = day;
+    deptNum = "Unspecified";
+    name = "Unspecified";
+    start = "8:30"; // 8:30 default start time
+    end = "9:40"; // 9:40 default end time
+    prof = "Unspecified"; // default professor
+  }
+  
+  /**
+   * Sets the department name and course number.
+   * @param deptNum : the department name and number
+   */ 
+  public void setDeptNum(String deptNum){
+   this.deptNum = deptNum;    
+  }
+  
+  /**
+   * Gets the department name and course number.
+   * @return the department name and course number
+   */ 
+  public String getDeptNum(){
+    return deptNum;
+  }
+  
+  /**
+   * Sets the course name.
+   * @param the course name
+   */
+  public void setName(String name){
+   this.name = name; 
+  }
+  
+  /*
+   * Gets the course name.
+   * @return the course name
+   */
+  public String getName(){
+   return name; 
+  }
+  
+  /**
+   * Sets the meeting start time
+   * @param time : the start time
+   */ 
+  public void setStart(String time){
+    start = time;    
+  }
+  
+  /*
+   * Returns the time the meeting starts.
+   * @return the start time
+   */ 
+  public String getStart(){
+    return start; 
+  }
+  
+  /**
+   * Sets the meeting end time
+   * @param time : the end time
+   */
+  public void setEnd(String time){
+    end = time;    
+  }
+  
+  /*
+   * Returns the time the meeting ends
+   * @return the end time
+   */ 
+  public String getEnd(){
+    return end; 
+  }
+  
+  /**
+   * Sets the meeting's professor.
+   * @param the professor
+   */ 
+  public void setProf(String prof){
+    this.prof = prof;    
+  }
+  
+  /**
+   * Returns the meeting's professor.
+   * @return the professor
+   */ 
+  public String getProf(){
+    return prof;
+  }
+  
+  /**
+   * Returns a string representation of the meeting.
+   */ 
+  public String toString(){
+    return deptNum + ": " + name +"\n" +
+      day + " from " + start + " to " + end + "\nProfessor " + prof; 
+    
+  }
+  
+  /**
+   * Main driver method for testing purposes 
+   */ 
+  public static void main(String[] args){
+    Meeting test = new Meeting("Wednesday");
+    System.out.println("Default: \n" + test);
+    System.out.println();s
+    
+    
+    test.setStart("2:15");
+    test.setEnd("4:05");
+    test.setDeptNum("CS230");
+    test.setName("Data Structures Lab");
+    test.setProf("Sohie Lee");
+    System.out.println(test);
+  }
+}
