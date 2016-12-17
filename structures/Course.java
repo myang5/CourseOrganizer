@@ -33,6 +33,10 @@ public class Course{
     this.notes = "";
     meetings = new LinkedList<Meeting>();
     numMeetings = 0;
+    
+    for (int i=0; i< days.length; i++){
+     addMeeting(days[i]);      
+    }
   }
   
   
@@ -158,14 +162,6 @@ public class Course{
     Course test1 = new Course("CS230", "Data Structures in Java", "9:50", tf);
     System.out.println("Creating a new object:\n" + test1 +"\n");
     
-    System.out.println("Adding a meeting on Tuesday:");
-    test1.addMeeting("Tuesday");
-    System.out.println(test1);
-    
-    System.out.println("\nAdding a meeting on Friday:");
-    test1.addMeeting("Friday");
-    System.out.println(test1);
-    
     System.out.println("\nAdding a meeting on Saturday:");
     test1.addMeeting("Saturday");
     System.out.println(test1);
@@ -184,9 +180,6 @@ public class Course{
     
     System.out.println("\nTesting constructor with notes");
     Course test2 = new Course("MATH215", "Mathematics for the Sciences I", "8:30", mwth, "Prerequisites: MATH 116");
-    test2.addMeeting("Monday");
-    test2.addMeeting("Wednesday");
-    test2.addMeeting("Thursday");
     System.out.println(test2);
     
     System.out.println("\nMeetings of MATH215:");
