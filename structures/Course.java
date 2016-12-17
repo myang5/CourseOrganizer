@@ -26,7 +26,7 @@ public class Course{
    * @param name : the course name
    * @param time : the time the class starts
    */ 
-  public Course(String deptNum, String name, String time){
+  public Course(String deptNum, String name, String time, String[] days){
     this.deptNum = deptNum;
     this.name = name;
     this.time = time;
@@ -36,8 +36,8 @@ public class Course{
   }
   
   
-  public Course(String deptNum, String name, String time, String notes){
-   this(deptNum, name, time); 
+  public Course(String deptNum, String name, String time, String[] days, String notes){
+   this(deptNum, name, time, days); 
    this.notes = notes;
   }
   
@@ -153,7 +153,9 @@ public class Course{
    * Main method for testing 
    */ 
   public static void main(String[] args){
-    Course test1 = new Course("CS230", "Data Structures in Java", "9:50");
+    String[] mwth = {"Monday", "Wednesday", "Thursday"};
+    String[] tf = {"Tuesday", "Friday"};
+    Course test1 = new Course("CS230", "Data Structures in Java", "9:50", tf);
     System.out.println("Creating a new object:\n" + test1 +"\n");
     
     System.out.println("Adding a meeting on Tuesday:");
@@ -181,7 +183,7 @@ public class Course{
     System.out.println(test1);
     
     System.out.println("\nTesting constructor with notes");
-    Course test2 = new Course("MATH215", "Mathematics for the Sciences I", "8:30","Prerequisites: MATH 116");
+    Course test2 = new Course("MATH215", "Mathematics for the Sciences I", "8:30", mwth, "Prerequisites: MATH 116");
     test2.addMeeting("Monday");
     test2.addMeeting("Wednesday");
     test2.addMeeting("Thursday");

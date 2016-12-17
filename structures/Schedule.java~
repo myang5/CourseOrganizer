@@ -30,6 +30,10 @@ public class Schedule{
     if (!sch.containsKey(current)){
       sch.put(current, c);
     }
+    else{
+     sch.remove(current);
+     sch.put(current, c);
+    }
   }
   
   /**
@@ -98,7 +102,7 @@ public class Schedule{
     s.addCourse(pol221);
     System.out.println(s);
     
-    System.out.println("\nTrying to add CS230 again (should produce no change):");
+    System.out.println("\nTrying to add CS230 again (should overwrite):");
     s.addCourse(cs230);
     System.out.println(s);
     
