@@ -50,6 +50,14 @@ public class Schedule{
   }
   
   /**
+   * Returns a list of all course department names and numbers.
+   * @return the list of all course names and number
+   */
+  public Set getAll(){
+   return sch.keySet();
+  }
+  
+  /**
    * Returns a string represntation of all keys contained in the hashtable.
    * @return the string 
    */ 
@@ -115,5 +123,8 @@ public class Schedule{
     System.out.println("\nRemoving CHIN201 (not present in schedule - should produce no change):");
     s.removeCourse(chin201);
     System.out.println(s);
+    
+    Set names = s.getAll();
+    System.out.println(names);
   }
 }
