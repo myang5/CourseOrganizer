@@ -62,19 +62,17 @@ public class Schedule{
    * @return the list of all course names and number
    * FIX THIS ASAP CAUSE toArray ISN'T WORKING PROPERLY WITH STRING[] PARAM
    */
-//  public String[] getAll(){
-//   Set temp =  sch.keySet();
-//   Object[] s = temp.toArray(new String[0]);
-//   String[] result = new String[s.length()];
-//   
-//
-//   for(int i=0; i<s.length; i++){
-//    
-//     
-//   }
-//   
-//   return new String[0];
-//  }
+  public String[] getAll(){
+   Set temp =  sch.keySet();
+   Object[] s = temp.toArray(new String[0]);
+   String[] result = new String[s.length];
+
+   for(int i=0; i<s.length; i++){
+    result[i] = (String) s[i];     
+   }
+   
+   return result;
+  }
   
   /**
    * Returns a string represntation of all keys contained in the hashtable.
@@ -127,6 +125,8 @@ public class Schedule{
     //System.out.println(s);
     
     String[] names = s.getAll();
-    System.out.println(names);
+    for(int i=0; i < names.length; i++){
+     System.out.println(names[i]);     
+    }
   }
 }
