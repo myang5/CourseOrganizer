@@ -2,6 +2,7 @@
 * FILE NAME: OrganizerGUI.java
 * WHO: Christina Buffo and Midori Yang
 * WHAT: Sets up the GUI for the course organizer.
+* coooooooool
 */
 import javax.swing.JFrame;
 import java.awt.*;
