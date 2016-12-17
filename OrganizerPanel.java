@@ -10,7 +10,7 @@ import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.table.*;
-import java.util.LinkedList;
+import java.util.*;
 import structures.*;
 
 public class OrganizerPanel extends JPanel{
@@ -24,32 +24,31 @@ public class OrganizerPanel extends JPanel{
   private JPanel list, schedule, buttons, courseEnter, days;
   private String[] courses, columnNames, rowNames;
   private int[][][] times;
-  //private Course[] courseObjs;
   private GridBagConstraints c, mainC, radioC;
   private Schedule mainSchedule;
   
   // Constructor
   public OrganizerPanel() {
     
-    courses = new String[] {"JPN 201: Intermediate Japanese",
-      "CS 230: Data Structures",
-      "CS 240: Introduction to Machine Organization",
-      "CS 240 Lab",
-      "CS 320: Tangible User Interfaces"};
+    mainSchedule = new Schedule();
     
-    times = new int[][][] { //{time,day}
-      {{2,1}, {2,2}, {2,4}, {2,5}},
-      {{1,2}, {1,5}},
-      {{4,2}, {4,5}},
-      {{5,3}},
-      {{4,1}, {4,4}}
-    };
+//    String[] c1Days = {"Mon","Tues","Thurs","Fri"};
+//    Course c1 = new Course("JPN 201","Intermediate Japanese","11:10 - 12:20", c1Days);
+//    String[] c2Days = {"Tues","Fri"};
+//    Course c2 = new Course("CS 230","Data Structures","9:50 - 11:00",c2Days);
+//    String[] c3Days = {"Tues","Fri"};
+//    Course c3 = new Course("CS 240","Introduction to Machine Organization","1:30 - 2:40",c3Days);
+//    String[] c4Days = {"Mon","Thurs"};
+//    Course c4 = new Course("CS 320","Tangible User Interfaces","1:30 - 2:40", c4Days);
+//    
+//    mainSchedule.addCourse(c1);
+//    mainSchedule.addCourse(c2);
+//    mainSchedule.addCourse(c3);
+//    mainSchedule.addCourse(c4);
     
     columnNames = new String[] {"","Mon", "Tues", "Wed", "Thurs", "Fri"};
     rowNames = new String[] {"8:30 - 9:40","9:50 - 11:00","11:10 - 12:20",
       "12:20 - 1:20", "1:30 - 2:40","2:50 - 4:00"};
-    
-    mainSchedule = new Schedule();
     
     c = new GridBagConstraints();
     mainC = new GridBagConstraints();
@@ -87,14 +86,16 @@ public class OrganizerPanel extends JPanel{
     //list.setBorder(BorderFactory.createLineBorder(Color.black));
     list.setMinimumSize(new Dimension(500,200));
     radioC = new GridBagConstraints();
-    for(String course: courses){
-      JCheckBox checkbox = new JCheckBox(course);
-      checkbox.addItemListener(new CheckBoxListener(checkbox.getLabel()));
-      checkbox.setSelected(true);
-      radioC.gridx = 1;
-      radioC.anchor = GridBagConstraints.FIRST_LINE_START;
-      list.add(checkbox,radioC);
-    }
+    String[] keys = mainSchedule.getAll();
+//    for(String key: keys){
+//      Course co = mainSchedule.getCourse(key);
+//      JCheckBox checkbox = new JCheckBox(co.getName());
+//      checkbox.addItemListener(new CheckBoxListener(co.getDeptNum()));
+//      checkbox.setSelected(true);
+//      radioC.gridx = 1;
+//      radioC.anchor = GridBagConstraints.FIRST_LINE_START;
+//      list.add(checkbox,radioC);
+//    }
     return list;
   }
   
@@ -110,27 +111,34 @@ public class OrganizerPanel extends JPanel{
     }
     
     public void itemStateChanged(ItemEvent e){
-      //get index of the label
-      int index = -1;
-      for(int i=0; i<courses.length; i++){
-        if(courses[i].equals(label)) index = i;
-      }
-      System.out.println(index);
+//      //get index of the label
+//      int index = -1;
+//      for(int i=0; i<courses.length; i++){
+//        if(courses[i].equals(label)) index = i;
+//      }
+//      System.out.println(index);
+      
+      Course co = mainSchedule.getCourse(label);
+      System.out.println(co);
+      LinkedList<Meeting> meets = co.getMeetings();
       
       if (e.getStateChange() == ItemEvent.SELECTED){
-        String code = courses[index].split(":")[0];
+        String code = co.getDeptNum();
         System.out.println(code);
         
-        for(int j=0; j<times[index].length; j++){
-          System.out.println(times[index][j][0] + " " + times[index][j][1]);
-          table.setValueAt(code, times[index][j][0], times[index][j][1]);
+        for(Meeting meet: meets){
+          int row = java.util.Arrays.asList(rowNames).indexOf(meet.getTime());
+          int col = java.util.Arrays.asList(columnNames).indexOf(meet.getDay());
+          table.setValueAt(code, row, col);
         } 
       }
       else if (e.getStateChange() == ItemEvent.DESELECTED){
         System.out.println(" deselected");
-        for(int j=0; j<times[index].length; j++){
-          table.setValueAt("",times[index][j][0], times[index][j][1]);
-        }
+        for(Meeting meet: meets){
+          int row = java.util.Arrays.asList(rowNames).indexOf(meet.getTime());
+          int col = java.util.Arrays.asList(columnNames).indexOf(meet.getDay());
+          table.setValueAt("", row, col);
+        } 
       }
     }
   }
@@ -145,13 +153,6 @@ public class OrganizerPanel extends JPanel{
     table.setGridColor(Color.black);
     //table.setIntercellSpacing(new Dimension(10,10));
     
-    for(int i=0; i<courses.length; i++){
-      String code = courses[i].split(":")[0];
-      for(int j=0; j<times[i].length; j++){
-        table.setValueAt(code,times[i][j][0], times[i][j][1]);
-      }
-    }
-    
     schedule = new JPanel(new BorderLayout());
     schedule.add(table.getTableHeader(), BorderLayout.PAGE_START);
     schedule.add(table, BorderLayout.CENTER);
@@ -159,6 +160,7 @@ public class OrganizerPanel extends JPanel{
     return schedule;
   }
   
+  //replace with java.util.Arrays.asList(rowNames).indexOf(time)
   private int getRowIndex(String time){
     int index = -1;
     for(int i=0; i<rowNames.length; i++){
@@ -168,6 +170,7 @@ public class OrganizerPanel extends JPanel{
     return index;
   }
   
+  //replace with java.util.Arrays.asList(columnNames).indexOf(day)
   private int getColumnIndex(String day){
     int index = -1;
     for(int i=0; i<columnNames.length; i++){
@@ -342,33 +345,6 @@ public class OrganizerPanel extends JPanel{
   }
   
   
-//  private class Course{
-//    String code, name, time, notes;
-//    String [] days;
-//    
-//    public Course(String code, String name, String[] days, String time, String notes){
-//      this.code = code;
-//      this.name = name;
-//      this.days = days;
-//      this.time = time;
-//      this.notes = notes;
-//    }
-//    
-//    public String getCourseTitle(){
-//      return code + ": " + name;
-//    }
-//    
-//    public String toString(){
-//      String result = code + " " + name + "\nTime: ";
-//      for(String day: days){
-//        result += day + ", ";
-//      }
-//      result += time + "\nNotes: " + notes;
-//      return  result;
-//    }
-//  }
-  
-  
   //gets the course information and creates a Course object
   private void saveCourse(){
     String codeStr = code.getText();
@@ -390,39 +366,16 @@ public class OrganizerPanel extends JPanel{
     String timeStr = String.valueOf(timeOpts.getSelectedItem());
     String notesStr = notes.getText();
     
-    Course course = new Course(codeStr, nameStr, timeStr);
-    //Course course = new Course(codeStr, nameStr, dayStrs, timeStr, notesStr);
+    Course course = new Course(codeStr, nameStr, timeStr, dayStrs, notesStr);
     System.out.println(course);
-    
-    //Add course name to courses[] since CheckBoxListener references it
-    //to get the course code
-    String[] tempCourses = new String[courses.length + 1];
-    for(int i=0; i<courses.length; i++){
-      tempCourses[i] = courses[i];
-    }
-    tempCourses[courses.length] = course.getName();
-    courses = tempCourses;
-    
-    //Add meeting times based on day and times to times[]
-//    int[][] sections = new int[dayStrs.length][];
-//    for(int i=0; i< sections.length; i++){
-//      sections[i] = new int[] {getRowIndex(timeStr), getColumnIndex(dayStrs[i])};
-//    }
-//    int[][][] tempTimes = new int[times.length + 1][][];
-//    for(int i=0; i<times.length; i++){
-//      tempTimes[i] = times[i];
-//    }
-//    tempTimes[times.length] = sections;
-//    times = tempTimes;
-    for(String day: dayStrs){
-      course.addMeeting(day);
-    }
     
     mainSchedule.addCourse(course);
     
     JCheckBox checkbox = new JCheckBox(course.getName());
-    checkbox.addItemListener(new CheckBoxListener(checkbox.getLabel()));
+    checkbox.addItemListener(new CheckBoxListener(course.getDeptNum()));
     checkbox.setSelected(true);
+    radioC.gridx = 1;
+    radioC.anchor = GridBagConstraints.FIRST_LINE_START;
     list.add(checkbox,radioC);
   }
   
