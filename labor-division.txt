@@ -1,0 +1,12 @@
+Midori:
+-Initial idea development and planning
+-GUI design and sample GUI design
+-OrganizerGUI and OrganizerPanel classes
+-User Manual
+
+
+Christina:
+-Initial idea development and planning
+-Writing the initial description
+-Meeting, Course, Schedule classes
+-User Manual
