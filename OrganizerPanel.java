@@ -355,10 +355,14 @@ public class OrganizerPanel extends JPanel{
     return buttons;
   }
   
-  //makes the panel containing all the course info entry fields
+  /**
+   * Makes the panel with all course information entry fields
+   * @return A JPanel with multiple input fields.
+   */
   private JPanel makeCourseEnter(){
     JPanel courseEnter = new JPanel(new GridBagLayout());
     
+    //Course department and number label
     JLabel label1= new JLabel("Course department and number");
     label1.setMaximumSize(new Dimension(70,20));
     label1.setHorizontalAlignment(JLabel.RIGHT);
@@ -368,6 +372,7 @@ public class OrganizerPanel extends JPanel{
     c.insets = new Insets(10,10,0,10);//top, left, bottom, right
     courseEnter.add(label1, c);
     
+    //Course name label
     JLabel label2= new JLabel("Course name");
     label2.setMaximumSize(new Dimension(70,20));
     label2.setHorizontalAlignment(JLabel.RIGHT);
@@ -375,6 +380,7 @@ public class OrganizerPanel extends JPanel{
     c.gridy = 1;
     courseEnter.add(label2, c);
     
+    //Days of the week label
     JLabel label3= new JLabel("Days of the week");
     label3.setMaximumSize(new Dimension(70,20));
     label3.setHorizontalAlignment(JLabel.RIGHT);
@@ -382,6 +388,7 @@ public class OrganizerPanel extends JPanel{
     c.gridy = 2;
     courseEnter.add(label3, c);
     
+    //Times label
     JLabel label4= new JLabel("Time");
     label4.setMaximumSize(new Dimension(70,20));
     label4.setHorizontalAlignment(JLabel.RIGHT);
@@ -389,6 +396,7 @@ public class OrganizerPanel extends JPanel{
     c.gridy = 3;
     courseEnter.add(label4, c);
     
+    //Credits label
     JLabel label5= new JLabel("Credits");
     label4.setMaximumSize(new Dimension(70,20));
     label4.setHorizontalAlignment(JLabel.RIGHT);
@@ -396,6 +404,7 @@ public class OrganizerPanel extends JPanel{
     c.gridy = 4;
     courseEnter.add(label5, c);
     
+    //Notes label
     JLabel label6= new JLabel("Notes (optional)");
     label5.setMaximumSize(new Dimension(70,20));
     label5.setHorizontalAlignment(JLabel.RIGHT);
@@ -404,6 +413,7 @@ public class OrganizerPanel extends JPanel{
     c.insets = new Insets(10,10,10,10);//top, left, bottom, right
     courseEnter.add(label6, c);
     
+    //Text field for course dept and number
     code = new JTextField("ex. CS 230", 20);
     c.gridx = 1;
     c.gridy = 0;
@@ -411,11 +421,13 @@ public class OrganizerPanel extends JPanel{
     c.anchor = GridBagConstraints.LINE_START;
     courseEnter.add(code, c);
     
+    //Text field for course name
     name = new JTextField("ex. Data Structures", 20);
     c.gridx = 1;
     c.gridy = 1;
     courseEnter.add(name, c);
     
+    //Checkboxes for days of the week
     days = new JPanel(new FlowLayout(FlowLayout.CENTER));
     for(int i=1; i<columnNames.length; i++){
       days.add(new JCheckBox(columnNames[i]));
@@ -424,7 +436,7 @@ public class OrganizerPanel extends JPanel{
     c.gridy = 2;
     courseEnter.add(days, c);
     
-    
+    //Drop-down menu for meeting times
     String[] timeStrings = {"","8:30 - 9:40","9:50 - 11:00","11:10 - 12:20",
       "12:20 - 1:20", "1:30 - 2:40","2:50 - 4:00"};
     timeOpts = new JComboBox(timeStrings);
@@ -432,17 +444,20 @@ public class OrganizerPanel extends JPanel{
     c.gridy = 3;
     courseEnter.add(timeOpts, c);
     
+    //Drop-down menu for course credit options
     String[] creditStrings = {"", "1.0", "1.25"};
     creditOpts = new JComboBox(creditStrings);
     c.gridx = 1;
     c.gridy = 4;
     courseEnter.add(creditOpts, c);
     
+    //Text field for notes
     notes = new JTextField(20);
     c.gridx = 1;
     c.gridy = 5;
     courseEnter.add(notes, c);
     
+    //Save and cancel buttons
     JPanel buttons = new JPanel(new GridBagLayout());
     GridBagConstraints c2 = new GridBagConstraints();
     saveButton = new JButton("Save");
@@ -468,7 +483,10 @@ public class OrganizerPanel extends JPanel{
     return courseEnter;
   }
   
-  //makes the course entry JFrame upon init and hides it
+  /*
+   * Creates a new JFrame with the course entry panel as the content.
+   * JFrame is created once and is hidden as opposed to closed completely.
+   */
   public void openCourseEnter(){ 
     createCourse = new JFrame("Enter a Course");
     createCourse.getContentPane().add(makeCourseEnter());
@@ -480,7 +498,10 @@ public class OrganizerPanel extends JPanel{
   }
   
   
-  //resets the info entry fields in the course entry JFrame
+  /**
+   * Method for resetting the user input fields since a new course entry window
+   * is not made every time the user clicks "Enter a course."
+   */
   private void resetCourseEnter(){
     code.setText("ex. CS 230");
     name.setText("ex. Data Structures");
@@ -493,16 +514,28 @@ public class OrganizerPanel extends JPanel{
     notes.setText("");
   }
   
+  /**
+   * Private class for handling button events
+   */
   private class ButtonListener implements ActionListener{
     public void actionPerformed(ActionEvent e){
+      
+      //when the user clicks the "Enter a course" button, the fields are reset and
+      //the course entry window is revealed.
       if(e.getSource()==courseButton){
         resetCourseEnter();
         createCourse.setVisible(true);
       }
+      
+      //when the user clicks "Export to file," the currently visible courses are 
+      //saved into a .txt file with a name of the user's choosing.
       if(e.getSource()==exportButton){
         String filename = JOptionPane.showInputDialog(null,"Please enter a file name:");
         mainSchedule.saveVisible(filename + ".txt");
       }
+      
+      //when the "Save" button is clicked in the course entry window to save a new
+      //course
       if(e.getSource()==saveButton){
         String codeStr = code.getText();
         String nameStr = name.getText();
@@ -537,11 +570,13 @@ public class OrganizerPanel extends JPanel{
           JOptionPane.showMessageDialog(null,"You did not enter one or more of the fields.");
         }
         
+        //save the course once all fields have been completed
         else{
           Course course = new Course(codeStr, nameStr, timeStr, dayStrs, credit, notesStr);
           System.out.println(course);
           mainSchedule.addCourse(course);
           
+          //create the appropriate checkbox in the course list
           JCheckBox checkbox = new JCheckBox(course.getDeptNum() + ": " + course.getName());
           checkbox.addItemListener(new CheckBoxListener(course.getDeptNum()));
           checkbox.setSelected(true);
@@ -549,10 +584,12 @@ public class OrganizerPanel extends JPanel{
           radioC.anchor = GridBagConstraints.FIRST_LINE_START;
           list.add(checkbox,radioC);
           
+          //hide course entry window
           createCourse.setVisible(false);
         }
-        
       }
+      
+      //if user clicks cancel, hide the course entry window
       if(e.getSource()==cancelButton){
         createCourse.setVisible(false);
       }
