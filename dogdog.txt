@@ -1,0 +1,32 @@
+Current schedule includes: 
+
+CS Test: Test
+1:30 - 2:40
+Meets on: Mon Thurs 
+Credits: 1.0
+
+CS 230: Data Structures
+9:50 - 11:00
+Meets on: Tues Fri 
+Credits: 1.0
+
+CS Test2: Test2
+1:30 - 2:40
+Meets on: Mon Thurs 
+Credits: 1.0
+
+JPN 201: Intermediate Japanese
+11:10 - 12:20
+Meets on: Mon Tues Thurs Fri 
+Credits: 1.0
+
+CS 240: Introduction to Machine Organization
+1:30 - 2:40
+Meets on: Tues Fri 
+Credits: 1.0
+
+CS 320: Tangible User Interfaces
+1:30 - 2:40
+Meets on: Mon Thurs 
+Credits: 1.0
+

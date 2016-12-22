@@ -16,6 +16,7 @@ import structures.*;
 public class OrganizerPanel extends JPanel{
   
   //global vars so that everything is inter-accessible
+  private JLabel creditLabel;
   private JFrame createCourse;
   private JButton courseButton, exportButton, saveButton, cancelButton;
   private JTable table;
@@ -60,6 +61,8 @@ public class OrganizerPanel extends JPanel{
     setLayout(new GridBagLayout());
     setBorder(BorderFactory.createEmptyBorder(20,20,20,20));
     
+    creditLabel= new JLabel("Total credits: " + mainSchedule.sumVisible());
+    
     mainC.gridx = 1;
     mainC.gridy = 0;
     mainC.insets = new Insets(0,0,0,0);
@@ -78,6 +81,11 @@ public class OrganizerPanel extends JPanel{
     mainC.weightx = 0.0;
     mainC.insets = new Insets(20,0,0,0);
     add(makeButtons(), mainC);
+    mainC.gridx = 1;
+    mainC.gridy = 1;
+    mainC.weightx = 0.0;
+    mainC.insets = new Insets(0,0,0,0);
+    add(creditLabel, mainC);
     openCourseEnter();
   }
   
@@ -152,6 +160,8 @@ public class OrganizerPanel extends JPanel{
             
           }
         } 
+        co.show();
+        creditLabel.setText("Total credits: " + mainSchedule.sumVisible());
       }
       
       
@@ -200,6 +210,8 @@ public class OrganizerPanel extends JPanel{
             updateRowHeights();
           }
         } 
+        co.hide();
+        creditLabel.setText("Total credits: " + mainSchedule.sumVisible());
       }
     }
   }
@@ -457,10 +469,10 @@ public class OrganizerPanel extends JPanel{
         createCourse.setVisible(true);
       }
       if(e.getSource()==exportButton){
-        System.out.println("exportButton");
+        String filename = JOptionPane.showInputDialog(null,"Please enter a file name:");
+        mainSchedule.saveVisible(filename + ".txt");
       }
       if(e.getSource()==saveButton){
-        System.out.println("save");
         String codeStr = code.getText();
         String nameStr = name.getText();
         
@@ -511,7 +523,6 @@ public class OrganizerPanel extends JPanel{
         
       }
       if(e.getSource()==cancelButton){
-        System.out.println("cancel");
         createCourse.setVisible(false);
       }
     }
