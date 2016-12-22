@@ -19,8 +19,56 @@ public class Schedule{
   }
   
   /**
+   * Constructor for schedule class given a file
+   * @param infile_name: the name of the input file
+   */
+  public Schedule(String infile_name){
+    this();
+    try{
+      Scanner fileReader = new Scanner(new File(infile_name));
+      String s = "";
+      fileReader.nextLine();// skip the first 2 lines of the page
+      fileReader.nextLine();
+      
+      while(fileReader.hasNext()){
+        s = fileReader.nextLine();
+        
+        if(!s.equals(" ")){
+          // deptNum and name on same line
+          String[] temp = s.split(":");
+          String deptNum =  temp[0];
+          String name = temp[1];
+          
+          // time
+          String time = fileReader.nextLine();
+          
+          // list of meeting days
+          s = fileReader.nextLine();
+          String days = s.split(":")[1];
+          String[] daysList = days.split(" ");
+          String notes = "";
+          
+          // for reading in notes: may not be any
+          if(fileReader.hasNext()){
+            s = fileReader.nextLine();
+            
+            if(!s.equals(" ")){
+              notes = s;
+            }
+          }
+          Course c = new Course(deptNum, name, time, daysList, notes);
+          addCourse(c);
+        }
+      }
+      
+    } catch (IOException ex){
+      System.out.println("****ERROR**** The file does not exist: " + ex);
+    }
+  }
+  
+  /**
    * Adds the course if it is not already present in the schedule.
-   * @param c : the course to be added
+   * @param c: the course to be added
    */ 
   public void addCourse(Course c){
     String current = c.getDeptNum();
@@ -37,7 +85,7 @@ public class Schedule{
   /**
    * Removes the course if it was in the schedule.
    * Otherwise, does nothing.
-   * @param c : the course to be removed
+   * @param c: the course to be removed
    */
   public void removeCourse(Course c){
     String current = c.getDeptNum();
@@ -107,8 +155,7 @@ public class Schedule{
   
   /**
    * Saves a txt file of the currently visible courses.
-   * @param output_name : the name of of the file to be printed
-   * DOESN'T CURRENTLY WORK FOR SOME REASON
+   * @param output_name: the name of of the file to be printed
    */
   public void saveVisible(String output_name){
     try{
@@ -124,7 +171,7 @@ public class Schedule{
       }
       writer.close();
     } catch (IOException ex) {
-     System.out.println("***ERROR*** The file could not be written: " + ex); 
+      System.out.println("***ERROR*** The file could not be written: " + ex); 
     }   
   }
   
@@ -143,8 +190,8 @@ public class Schedule{
    */ 
   public static void main(String[] args){
     Schedule s = new Schedule();
-    System.out.println("Newly created schedule:\n");
-    System.out.println(s);
+    //System.out.println("Newly created schedule:\n");
+    //System.out.println(s);
     String[] mwth = {"Monday", "Wednesday", "Thursday"};
     String[] tf = {"Tuesday", "Friday"};
     
@@ -155,45 +202,49 @@ public class Schedule{
     Course pol221 = new Course("POL3221", "World Politics", "11:10-12:20", tf);
     Course chin201 = new Course("CHIN201", "Intermediate Chinese", "11:10", mwth);
     
-    System.out.println("\nAdding the first course:");
+    //System.out.println("\nAdding the first course:");
     s.addCourse(cs230);
-    System.out.println(s);
+    //System.out.println(s);
     
-    System.out.println("\nAdding additional courses:");
+    //System.out.println("\nAdding additional courses:");
     s.addCourse(math215);
     s.addCourse(phys107);
     s.addCourse(rel263);
     s.addCourse(pol221);
-    System.out.println(s);
+    //System.out.println(s);
     
-    System.out.println("\nTrying to add CS230 again (should overwrite):");
+    //System.out.println("\nTrying to add CS230 again (should overwrite):");
     s.addCourse(cs230);
-    System.out.println(s);
+    //System.out.println(s);
     
-    System.out.println("\nRemoving REL263:");
+    //System.out.println("\nRemoving REL263:");
     s.removeCourse(rel263);
-    System.out.println(s);
+    //System.out.println(s);
     
-    System.out.println("\nRemoving CHIN201 (not present in schedule - should produce no change):");
+    //System.out.println("\nRemoving CHIN201 (not present in schedule - should produce no change):");
     s.removeCourse(chin201);
-    System.out.println(s);
+    //System.out.println(s);
     
-    System.out.println("\nAll courses in the schedule:");
+    //System.out.println("\nAll courses in the schedule:");
     String[] names = s.getAll();
     for(int i=0; i < names.length; i++){
-      System.out.println(names[i]);     
+      //System.out.println(names[i]);     
     }
     
     phys107.hide();
     math215.hide();
-    System.out.println("\nVisible courses: (should be only CS230 and POL3221)");
+    //System.out.println("\nVisible courses: (should be only CS230 and POL3221)");
     String[] vis = s.getVisibleArray();
     for (int i=0; i < vis.length; i++){
-      System.out.println(vis[i]); 
+      //System.out.println(vis[i]); 
     }
     
-    System.out.println("\nTesting saving the visible in a file");
+    //System.out.println("\nTesting saving the visible in a file");
     s.saveVisible("test.txt");
-    System.out.println("File saved as 'test.txt'.");
+    //System.out.println("File saved as 'test.txt'.");
+    
+    System.out.println("\nTesting reading in from a file (reading in from test.txt):");
+    Schedule s1 = new Schedule("test.txt");
+    System.out.println(s1);
   }
 }

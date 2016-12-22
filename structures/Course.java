@@ -21,10 +21,11 @@ public class Course{
   
   
   /**
-   * Constructor for Course class, with notes
-   * @param deptNum : the course department and number
-   * @param name : the course name
-   * @param time : the time the class starts
+   * Constructor for Course class
+   * @param deptNum: the course department and number
+   * @param name: the course name
+   * @param time: the time the class starts
+   * @param days: the days of the week the course meets on
    */ 
   public Course(String deptNum, String name, String time, String[] days){
     this.deptNum = deptNum;
@@ -40,7 +41,14 @@ public class Course{
     }
   }
   
-  
+  /**
+   * Constructor for Course class, with notes
+   * @param deptNum: the course department and number
+   * @param name: the course name
+   * @param time: the time the class starts
+   * @param days: the days of the week the course meets on
+   * @param notes: any additional information about the class
+   */
   public Course(String deptNum, String name, String time, String[] days, String notes){
    this(deptNum, name, time, days); 
    this.notes = notes;
@@ -73,7 +81,7 @@ public class Course{
   
   /**
    * Sets the notes of the course (any additional information).
-   * @param note : the notes
+   * @param note: the notes
    */ 
   public void setNotes(String note){
     notes = note;
@@ -120,7 +128,7 @@ public class Course{
   /**
    * Adds a meeting to the list of meetings, and increases the number of meetings by 1.
    * If the meeting is already in the list, nothing is added.
-   * @param day : the day the meeting takes place
+   * @param day: the day the meeting takes place
    */ 
   public void addMeeting(String day){
     Meeting temp = new Meeting(day, time);
@@ -141,7 +149,7 @@ public class Course{
   /**
    * If the specified meeting time is already contained in the list of meetings, 
    * removes the meeting. Otherwise, does nothing.
-   * @param day : the day the meeting takes place
+   * @param day: the day the meeting takes place
    */ 
   public void removeMeeting(String day){    
     for (int i=0; i < meetings.size(); i++){

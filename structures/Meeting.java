@@ -10,9 +10,9 @@ public class Meeting {
   private String time;
   
   /**
-   * Constructor for Meeting class.
-   * @param day : the day the meeting occurs
-   * @param time : the time the meeting occurs
+   * Constructor for Meeting class: requires day and time
+   * @param day: the day the meeting occurs
+   * @param time: the time the meeting occurs
    */ 
   public Meeting(String day, String time){
     this.day = day;
