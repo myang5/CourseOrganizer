@@ -19,7 +19,9 @@ public class Schedule{
   }
   
   /**
-   * Constructor for schedule class given a file
+   * Constructor for schedule class given a file.
+   * Note: this is solely used for testing purposes and will only function
+   * with specific formats of files.  It will not be available to the user.
    * @param infile_name: the name of the input file
    */
   public Schedule(String infile_name){
@@ -46,6 +48,12 @@ public class Schedule{
           s = fileReader.nextLine();
           String days = s.split(":")[1];
           String[] daysList = days.split(" ");
+          
+          // credits
+          s = fileReader.nextLine();
+          temp = s.split(": ");
+          double credit = Double.parseDouble(temp[1]);
+          
           String notes = "";
           
           // for reading in notes: may not be any
@@ -56,7 +64,7 @@ public class Schedule{
               notes = s;
             }
           }
-          Course c = new Course(deptNum, name, time, daysList, notes);
+          Course c = new Course(deptNum, name, time, daysList, credit, notes);
           addCourse(c);
         }
       }
@@ -195,12 +203,12 @@ public class Schedule{
     String[] mwth = {"Monday", "Wednesday", "Thursday"};
     String[] tf = {"Tuesday", "Friday"};
     
-    Course cs230 = new Course("CS230", "Data Structures in Java", "9:50-11:10", tf);
-    Course math215 = new Course("MATH215", "Math for the Sciences I", "8:30-9:40", mwth);   
-    Course phys107 = new Course("PHYS107", "Mechanics", "9:50-11:10", mwth);
-    Course rel263 = new Course("REL263", "Islam in the Modern World", "8:30-9:40", tf);
-    Course pol221 = new Course("POL3221", "World Politics", "11:10-12:20", tf);
-    Course chin201 = new Course("CHIN201", "Intermediate Chinese", "11:10", mwth);
+    Course cs230 = new Course("CS230", "Data Structures in Java", "9:50-11:10", tf, 1);
+    Course math215 = new Course("MATH215", "Math for the Sciences I", "8:30-9:40", mwth, 1);   
+    Course phys107 = new Course("PHYS107", "Mechanics", "9:50-11:10", mwth, 1.25);
+    Course rel263 = new Course("REL263", "Islam in the Modern World", "8:30-9:40", tf, 1);
+    Course pol221 = new Course("POL3221", "World Politics", "11:10-12:20", tf, 1);
+    Course chin201 = new Course("CHIN201", "Intermediate Chinese", "11:10", mwth, 1.25);
     
     //System.out.println("\nAdding the first course:");
     s.addCourse(cs230);

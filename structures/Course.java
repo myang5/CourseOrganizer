@@ -18,6 +18,7 @@ public class Course{
   public LinkedList<Meeting> meetings;
   public int numMeetings; // the number of times per week that the course meets
   public boolean visible;
+  public double credit;
   
   
   /**
@@ -26,12 +27,14 @@ public class Course{
    * @param name: the course name
    * @param time: the time the class starts
    * @param days: the days of the week the course meets on
+   * @param credit: the number of credits for this course
    */ 
-  public Course(String deptNum, String name, String time, String[] days){
+  public Course(String deptNum, String name, String time, String[] days, double credit){
     this.deptNum = deptNum;
     this.name = name;
     this.time = time;
     this.notes = "";
+    this.credit = credit;
     meetings = new LinkedList<Meeting>();
     numMeetings = 0;
     visible = true;
@@ -49,8 +52,8 @@ public class Course{
    * @param days: the days of the week the course meets on
    * @param notes: any additional information about the class
    */
-  public Course(String deptNum, String name, String time, String[] days, String notes){
-   this(deptNum, name, time, days); 
+  public Course(String deptNum, String name, String time, String[] days, double credit, String notes){
+   this(deptNum, name, time, days, credit); 
    this.notes = notes;
   }
   
@@ -107,6 +110,14 @@ public class Course{
    */
   public boolean isVisible(){
    return visible; 
+  }
+  
+  /**
+   * Returns the number of credits for this course.
+   * @return the number of credits
+   */
+  public double getCredits(){
+   return credit; 
   }
   
   /**
@@ -178,6 +189,8 @@ public class Course{
     else{ // if no meetings have been added
       s+="No meeting days specified."; 
     }
+    s+= "\nCredits: " + credit;
+    
     if(!notes.equals("")){
      s +="\n" + notes; 
     }
@@ -190,7 +203,7 @@ public class Course{
   public static void main(String[] args){
     String[] mwth = {"Monday", "Wednesday", "Thursday"};
     String[] tf = {"Tuesday", "Friday"};
-    Course test1 = new Course("CS230", "Data Structures in Java", "9:50-11:10", tf);
+    Course test1 = new Course("CS230", "Data Structures in Java", "9:50-11:10", tf, 1);
     System.out.println("Creating a new object:\n" + test1);
     
     System.out.println("\nAdding a meeting on Saturday:");
@@ -210,7 +223,7 @@ public class Course{
     System.out.println(test1);
     
     System.out.println("\nTesting constructor with notes");
-    Course test2 = new Course("MATH215", "Mathematics for the Sciences I", "8:30-9:40", mwth, "Prerequisites: MATH 116");
+    Course test2 = new Course("MATH215", "Mathematics for the Sciences I", "8:30-9:40", mwth, 1, "Prerequisites: MATH 116");
     System.out.println(test2);
     
     System.out.println("\nMeetings of MATH215:");

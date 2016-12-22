@@ -3,8 +3,10 @@ Current schedule includes:
 CS230: Data Structures in Java
 9:50-11:10
 Meets on: Tuesday Friday 
+Credits: 1.0
 
 POL3221: World Politics
 11:10-12:20
 Meets on: Tuesday Friday 
+Credits: 1.0
 
