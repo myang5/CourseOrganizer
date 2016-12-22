@@ -184,6 +184,23 @@ public class Schedule{
   }
   
   /**
+   * Returns the total number of credits of all visible classes
+   * @return the total credits
+   */ 
+  public double sumVisible(){
+    LinkedList<Course> list = getVisibleList();
+    double sum = 0;
+    
+    for (int i=0; i < list.size(); i++){
+     Course c = list.get(i);
+     double temp = c.getCredits();
+     sum += temp;
+    }
+    
+    return sum;
+  }
+  
+  /**
    * Returns a string represntation of all keys contained in the hashtable.
    * @return the string 
    */ 
@@ -254,5 +271,8 @@ public class Schedule{
     System.out.println("\nTesting reading in from a file (reading in from test.txt):");
     Schedule s1 = new Schedule("test.txt");
     System.out.println(s1);
+    
+    System.out.println("\nTesting sumVisible: totals the credits of all visible classes");
+    System.out.println("Credits: " + s1.sumVisible());
   }
 }
