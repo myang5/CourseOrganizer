@@ -5,6 +5,8 @@
  * new courses
  */
 
+
+
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
@@ -12,6 +14,9 @@ import javax.swing.event.*;
 import javax.swing.table.*;
 import java.util.*;
 import structures.*;
+
+
+
 
 public class OrganizerPanel extends JPanel{
   
@@ -28,28 +33,34 @@ public class OrganizerPanel extends JPanel{
   private GridBagConstraints c, mainC, radioC;
   private Schedule mainSchedule;
   
-  // Constructor
+  
+  
+  /**
+   * Constructor. Initializes the OrganizerPanel window with no classes.
+   */
   public OrganizerPanel() {
     
     mainSchedule = new Schedule();
     
-    String[] c1Days = {"Mon","Tues","Thurs","Fri"};
-    Course c1 = new Course("JPN 201","Intermediate Japanese","11:10 - 12:20", c1Days, 1.0);
-    String[] c2Days = {"Tues","Fri"};
-    Course c2 = new Course("CS 230","Data Structures","9:50 - 11:00",c2Days, 1.0);
-    String[] c3Days = {"Tues","Fri"};
-    Course c3 = new Course("CS 240","Introduction to Machine Organization","1:30 - 2:40",c3Days, 1.0);
-    String[] c4Days = {"Mon","Thurs"};
-    Course c4 = new Course("CS 320","Tangible User Interfaces","1:30 - 2:40", c4Days, 1.0);
-    Course c5 = new Course("CS Test","Test","1:30 - 2:40", c4Days, 1.0);
-    Course c6 = new Course("CS Test2","Test2","1:30 - 2:40", c4Days, 1.0);
-    
-    mainSchedule.addCourse(c1);
-    mainSchedule.addCourse(c2);
-    mainSchedule.addCourse(c3);
-    mainSchedule.addCourse(c4);
-    mainSchedule.addCourse(c5);
-    mainSchedule.addCourse(c6);
+    if(false){ //initialize with classes for testing purposes
+      String[] c1Days = {"Mon","Tues","Thurs","Fri"};
+      Course c1 = new Course("JPN 201","Intermediate Japanese","11:10 - 12:20", c1Days, 1.0);
+      String[] c2Days = {"Tues","Fri"};
+      Course c2 = new Course("CS 230","Data Structures","9:50 - 11:00",c2Days, 1.0);
+      String[] c3Days = {"Tues","Fri"};
+      Course c3 = new Course("CS 240","Introduction to Machine Organization","1:30 - 2:40",c3Days, 1.0);
+      String[] c4Days = {"Mon","Thurs"};
+      Course c4 = new Course("CS 320","Tangible User Interfaces","1:30 - 2:40", c4Days, 1.0);
+      Course c5 = new Course("CS Test","Test","1:30 - 2:40", c4Days, 1.0);
+      Course c6 = new Course("CS Test2","Test2","1:30 - 2:40", c4Days, 1.0);
+      
+      mainSchedule.addCourse(c1);
+      mainSchedule.addCourse(c2);
+      mainSchedule.addCourse(c3);
+      mainSchedule.addCourse(c4);
+      mainSchedule.addCourse(c5);
+      mainSchedule.addCourse(c6);
+    }
     
     columnNames = new String[] {"","Mon", "Tues", "Wed", "Thurs", "Fri"};
     rowNames = new String[] {"8:30 - 9:40","9:50 - 11:00","11:10 - 12:20",
@@ -89,10 +100,17 @@ public class OrganizerPanel extends JPanel{
     openCourseEnter();
   }
   
-  /*--------------------------------------------------------------------
+  
+  
+  /*----------------------------------------------------------------------------
    * Course list related methods
-   *--------------------------------------------------------------------*/
-  //initialize list and panel
+   *----------------------------------------------------------------------------*/
+  
+  /**
+   * Creates panel that holds the list of courses entered along with the checkboxes
+   * that allow the user to toggle which classes are visible.
+   * @return a JPanel with the courses and their checkboxes
+   */
   private JPanel makeList(){
     list = new JPanel(new GridBagLayout());
     //list.setBorder(BorderFactory.createLineBorder(Color.black));
@@ -111,26 +129,33 @@ public class OrganizerPanel extends JPanel{
     return list;
   }
   
-  //private CheckBoxListener class that indicates to the table which
-  //classes to show
+  /**
+   * Private class that handles toggling the courses in the schedule
+   */
   private class CheckBoxListener implements ItemListener{
     
     String label;
     
-    //save the label of the checkbox
+    /**
+     * Constructor that takes in the dept number of the course so that the listener
+     * knows which course it corresponds to.
+     * @param label The dept number of the course the listener is attached to
+     */
     public CheckBoxListener(String label){
       this.label = label;
     }
     
+    
+    /**
+     * Method part of the ItemListener interface
+     * @param e an ItemEvent
+     */
     public void itemStateChanged(ItemEvent e){
-      
-      //System.out.println("Checkbox: " + label);
       
       Course co = mainSchedule.getCourse(label);
       LinkedList<Meeting> meets = co.getMeetings();
       
       if (e.getStateChange() == ItemEvent.SELECTED){
-        //System.out.println("selected");
         for(Meeting meet: meets){
           int row = java.util.Arrays.asList(rowNames).indexOf(meet.getTime());
           int col = java.util.Arrays.asList(columnNames).indexOf(meet.getDay());
@@ -140,7 +165,6 @@ public class OrganizerPanel extends JPanel{
           //which means no conflicts
           if(currentVal==null){
             table.setValueAt("<html>" + label + "</html>", row, col);
-            //System.out.println("Current val: " + table.getValueAt(row,col));
           }
           
           //if there is already a value in the cell, handle class conflicts
@@ -154,7 +178,6 @@ public class OrganizerPanel extends JPanel{
             }
             newVal += label + "</html>";
             
-            //System.out.println("Setting value to " + newVal);
             table.setValueAt(newVal, row, col);
             updateRowHeights();
             
@@ -166,15 +189,12 @@ public class OrganizerPanel extends JPanel{
       
       
       else if (e.getStateChange() == ItemEvent.DESELECTED){
-        //System.out.println("deselected");
         for(Meeting meet: meets){
           int row = java.util.Arrays.asList(rowNames).indexOf(meet.getTime());
           int col = java.util.Arrays.asList(columnNames).indexOf(meet.getDay());
           String currentVal = (String) table.getValueAt(row,col);
-          //System.out.println("Val in cell: " + currentVal);
           String temp = currentVal.split("<html>")[1];
           temp = temp.split("</html>")[0];
-          //System.out.println(temp);
           String[] codes = temp.split("<br>");
           
           
@@ -183,7 +203,6 @@ public class OrganizerPanel extends JPanel{
           if(codes.length==1){
             //needs to be set to null to correspond with code in SELECTED
             table.setValueAt(null, row, col);
-            //System.out.println("Current val: " + table.getValueAt(row,col));
           }
           
           //else, remove the class that was unchecked and update the cell
@@ -195,17 +214,14 @@ public class OrganizerPanel extends JPanel{
               System.out.println(codesList.get(i));
               //if code is last only add code
               if(i==codesList.size()-1) {
-                //System.out.println("doing 2");
                 newVal += codesList.get(i);
                 //for all other codes also add line break
               } else {
-                //System.out.println("doing 3");
                 newVal += codesList.get(i) + "<br>";
               }
             }
             newVal += "</html>";
             
-            //System.out.println("Setting value to " + newVal);
             table.setValueAt(newVal, row, col);
             updateRowHeights();
           }
@@ -216,10 +232,16 @@ public class OrganizerPanel extends JPanel{
     }
   }
   
-  /*--------------------------------------------------------------------
+  
+  
+  /*----------------------------------------------------------------------------
    * Schedule related methods
-   *--------------------------------------------------------------------*/
-  //initialize table and panel
+   *----------------------------------------------------------------------------*/
+  
+  /**
+   * Creates the JTable that displays the schedule
+   * @return A JPanel that contains the table
+   */
   private JPanel makeSchedule(){
     table = new JTable(new ScheduleTableModel());
     table.setDefaultRenderer(String.class, new ColorRenderer());
@@ -233,17 +255,18 @@ public class OrganizerPanel extends JPanel{
     return schedule;
   }
   
-  
+  /**
+   * Private class that creates a custom table model for the schedule. Mostly 
+   * created to disable user editing.
+   */
   private class ScheduleTableModel extends AbstractTableModel{
     
     private Object[][] data = new Object[rowNames.length][columnNames.length];
     
-    //must be implemented
     public int getColumnCount() {
       return columnNames.length;
     }
     
-    //must be implemented
     public int getRowCount() {
       return data.length;
     }
@@ -256,7 +279,6 @@ public class OrganizerPanel extends JPanel{
       return String.class;
     }
     
-    //must be implemented
     public Object getValueAt(int row, int col) {
       if(col==0) return rowNames[row];
       else{return data[row][col];}
@@ -271,16 +293,18 @@ public class OrganizerPanel extends JPanel{
       return false;
     }
     
-    
   }
   
-  
-  
-  static class ColorRenderer extends DefaultTableCellRenderer {
+  /**
+   * Custom TableCellRenderer that makes the cell's text turn red if there is more
+   * than one course in the time slot to indicate to the user that their current
+   * schedule has conflicts.
+   */
+  private class ColorRenderer extends DefaultTableCellRenderer {
     
     @Override
     public Component getTableCellRendererComponent(JTable table, Object value,
-                                                   boolean isSelected, boolean hasFocus, int row, int column) {
+                   boolean isSelected, boolean hasFocus, int row, int column) {
       Component c = super.getTableCellRendererComponent(table, value, isSelected,
                                                         hasFocus, row, column);
       String val = (String) table.getValueAt(row,column);
@@ -294,7 +318,10 @@ public class OrganizerPanel extends JPanel{
     }
   }
   
-  
+  /**
+   * Method that adjusts table row height according to the changing content as the
+   * user toggles courses.
+   */
   private void updateRowHeights(){
     for (int row = 0; row < table.getRowCount(); row++){
       int rowHeight = table.getRowHeight();
@@ -308,11 +335,15 @@ public class OrganizerPanel extends JPanel{
   
   
   
-  /*--------------------------------------------------------------------
+  /*----------------------------------------------------------------------------
    * Course entry related methods
-   *--------------------------------------------------------------------*/
+   *----------------------------------------------------------------------------*/
   
-  //makes the "Enter a course" and "Export to file" buttons
+  /**
+   * Method that creates a panel with the "Enter course" and "Export to file"
+   * buttons
+   * @return A JPanel with two buttons
+   */
   private JPanel makeButtons(){
     buttons = new JPanel();
     courseButton = new JButton("Enter a course");
@@ -447,7 +478,7 @@ public class OrganizerPanel extends JPanel{
     createCourse.setVisible(false);
     
   }
- 
+  
   
   //resets the info entry fields in the course entry JFrame
   private void resetCourseEnter(){
