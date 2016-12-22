@@ -1,9 +1,7 @@
 /**
- * Schedule.java
- * Christina Buffo and Midori Yang
- * Last updated: 12/16/2016
- * CS230 Final Project
- * The schedule object contains a hashtable, which stores all the courses added so far.
+ * FILE NAME: Schedule.java
+ * WHO: Christina Buffo
+ * WHAT: Contains a hashtable, which stores all the courses added so far.
  * The keys of the hashtable are the course department and number.
  */
 import java.io.*;
@@ -19,7 +17,7 @@ public class Schedule{
   public Schedule(){
     sch = new Hashtable<String, Course>(20);  
   }
-    
+  
   /**
    * Adds the course if it is not already present in the schedule.
    * @param c : the course to be added
@@ -82,11 +80,11 @@ public class Schedule{
     String[] temp = getAll();
     
     for (int i=0; i< temp.length; i++){
-     Course c = sch.get(temp[i]);
-     
-     if(c.isVisible()){
-      list.add(c);
-     }
+      Course c = sch.get(temp[i]);
+      
+      if(c.isVisible()){
+        list.add(c);
+      }
     }
     
     return list;
@@ -105,6 +103,29 @@ public class Schedule{
     }
     
     return result;
+  }
+  
+  /**
+   * Saves a txt file of the currently visible courses.
+   * @param output_name : the name of of the file to be printed
+   * DOESN'T CURRENTLY WORK FOR SOME REASON
+   */
+  public void saveVisible(String output_name){
+    try{
+      PrintWriter writer = new PrintWriter(new File(output_name));
+      writer.println("Current schedule includes: \n");
+      
+      LinkedList<Course> list = getVisibleList();
+      
+      for (int i=0; i<list.size(); i++){
+        Course c = list.get(i);
+        writer.println(c.toString());
+        writer.println();
+      }
+      writer.close();
+    } catch (IOException ex) {
+     System.out.println("***ERROR*** The file could not be written: " + ex); 
+    }   
   }
   
   /**
@@ -168,7 +189,11 @@ public class Schedule{
     System.out.println("\nVisible courses: (should be only CS230 and POL3221)");
     String[] vis = s.getVisibleArray();
     for (int i=0; i < vis.length; i++){
-     System.out.println(vis[i]); 
+      System.out.println(vis[i]); 
     }
+    
+    System.out.println("\nTesting saving the visible in a file");
+    s.saveVisible("test.txt");
+    System.out.println("File saved as 'test.txt'.");
   }
 }

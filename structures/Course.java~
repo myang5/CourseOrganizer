@@ -18,6 +18,7 @@ public class Course{
   public String notes;
   public LinkedList<Meeting> meetings;
   public int numMeetings; // the number of times per week that the course meets
+  public boolean visible;
   
   
   /**
@@ -33,6 +34,7 @@ public class Course{
     this.notes = "";
     meetings = new LinkedList<Meeting>();
     numMeetings = 0;
+    visible = true;
     
     for (int i=0; i< days.length; i++){
      addMeeting(days[i]);      
@@ -76,6 +78,28 @@ public class Course{
    */ 
   public void setNotes(String note){
     notes = note;
+  }
+  
+  /**
+   * Sets the course visibility to true.
+   */
+  public void show(){
+   visible = true; 
+  }
+  
+  /**
+   * Sets the course visibility to false.
+   */ 
+  public void hide(){
+   visible = false; 
+  }
+  
+  /**
+   * Returns a boolean value with the visibility of the course.
+   * @return if the course is visible
+   */
+  public boolean isVisible(){
+   return visible; 
   }
   
   /**
@@ -184,5 +208,14 @@ public class Course{
     
     System.out.println("\nMeetings of MATH215:");
     System.out.println(test2.getMeetings());
+    
+    System.out.println("\nTesting visibility methods:");
+    System.out.println("MATH215 is visible: " + test2.isVisible());
+    
+    test2.hide();
+    System.out.println("Hiding MATH215\nMATH215 is visible: " + test2.isVisible());
+    
+    test2.show();
+    System.out.println("Showing MATH215\nMATH215 is visible: " + test2.isVisible());
   }
 }

@@ -1,13 +1,12 @@
 /**
- * Course.java
- * Christina Buffo and Midori Yang
- * Last updated: 12/16/2016
- * CS230 Final Project
- * Course objects store information about a particular course,
+ * FILE NAME: Course.java
+ * WHO: Christina Buffo
+ * WHAT: Course objects store information about a particular course,
  * including a linkedlist holding the appropriate number of meeting objects.
  * It also contains information corresponding to the course department and 
  * number, as well as the course name.
  */
+
 import java.util.LinkedList;
 
 public class Course{
@@ -158,7 +157,7 @@ public class Course{
    * @return the string containing all the information of the course
    */ 
   public String toString(){
-    String s = deptNum + ": " + name + "\n";
+    String s = deptNum + ": " + name + "\n" + time + "\n";
     
     if (!meetings.isEmpty()){ // if at least one meeting has been added to the course
       s+= "Meets on: ";

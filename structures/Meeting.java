@@ -1,9 +1,7 @@
 /**
- * Meeting.java
- * Christina Buffo and Midori Yang
- * Last updated: 12/16/2016
- * CS230 Final Project
- * Meeting objects are subclasses of the course that store
+ * FILE NAME: Meeting.java
+ * WHO: Christina Buffo
+ * WHAT: Meeting objects are subclasses of the course that store
  * information about the course name, meeting time, and meeting day.
  */
 public class Meeting {

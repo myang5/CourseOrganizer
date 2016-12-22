@@ -19,7 +19,7 @@ public class Schedule{
   public Schedule(){
     sch = new Hashtable<String, Course>(20);  
   }
-  
+    
   /**
    * Adds the course if it is not already present in the schedule.
    * @param c : the course to be added
@@ -30,9 +30,9 @@ public class Schedule{
     if (!sch.containsKey(current)){
       sch.put(current, c);
     }
-    else{
-     sch.remove(current);
-     sch.put(current, c);
+    else{ // should overwrite the previous version
+      sch.remove(current);
+      sch.put(current, c);
     }
   }
   
@@ -54,24 +54,57 @@ public class Schedule{
    * @return the course
    */
   public Course getCourse(String key){
-   return sch.get(key); 
+    return sch.get(key); 
   }
   
   /**
    * Returns a list of all course department names and numbers.
    * @return the list of all course names and number
-   * FIX THIS ASAP CAUSE toArray ISN'T WORKING PROPERLY WITH STRING[] PARAM
    */
   public String[] getAll(){
-   Set temp =  sch.keySet();
-   Object[] s = temp.toArray(new String[0]);
-   String[] result = new String[s.length];
-
-   for(int i=0; i<s.length; i++){
-    result[i] = (String) s[i];     
-   }
-   
-   return result;
+    Set temp =  sch.keySet();
+    Object[] s = temp.toArray(new String[0]);
+    String[] result = new String[s.length];
+    
+    for(int i=0; i<s.length; i++){
+      result[i] = (String) s[i];     
+    }
+    
+    return result;
+  }
+  
+  /**
+   * Returns the list of all courses that are currently visible.
+   * @return the visible courses in linkedlist form
+   */
+  public LinkedList<Course> getVisibleList(){
+    LinkedList<Course> list = new LinkedList<Course>();
+    String[] temp = getAll();
+    
+    for (int i=0; i< temp.length; i++){
+     Course c = sch.get(temp[i]);
+     
+     if(c.isVisible()){
+      list.add(c);
+     }
+    }
+    
+    return list;
+  }
+  
+  /**
+   * Returns a list of all visible department names and numbers
+   * @return the visible course names and numbers in array form
+   */
+  public String[] getVisibleArray(){
+    LinkedList<Course> list = getVisibleList();
+    String[] result = new String[list.size()];
+    
+    for (int i=0; i< list.size(); i++){
+      result[i] = list.get(i).getDeptNum();
+    }
+    
+    return result;
   }
   
   /**
@@ -89,8 +122,8 @@ public class Schedule{
    */ 
   public static void main(String[] args){
     Schedule s = new Schedule();
-    //System.out.println("Newly created schedule:\n");
-    //System.out.println(s);
+    System.out.println("Newly created schedule:\n");
+    System.out.println(s);
     String[] mwth = {"Monday", "Wednesday", "Thursday"};
     String[] tf = {"Tuesday", "Friday"};
     
@@ -101,32 +134,41 @@ public class Schedule{
     Course pol221 = new Course("POL3221", "World Politics", "11:10-12:20", tf);
     Course chin201 = new Course("CHIN201", "Intermediate Chinese", "11:10", mwth);
     
-    //System.out.println("\nAdding the first course:");
+    System.out.println("\nAdding the first course:");
     s.addCourse(cs230);
-    //System.out.println(s);
+    System.out.println(s);
     
-    //System.out.println("\nAdding additional courses:");
+    System.out.println("\nAdding additional courses:");
     s.addCourse(math215);
     s.addCourse(phys107);
     s.addCourse(rel263);
     s.addCourse(pol221);
-    //System.out.println(s);
+    System.out.println(s);
     
-    //System.out.println("\nTrying to add CS230 again (should overwrite):");
+    System.out.println("\nTrying to add CS230 again (should overwrite):");
     s.addCourse(cs230);
-    //System.out.println(s);
+    System.out.println(s);
     
-    //System.out.println("\nRemoving REL263:");
+    System.out.println("\nRemoving REL263:");
     s.removeCourse(rel263);
-    //System.out.println(s);
+    System.out.println(s);
     
-    //System.out.println("\nRemoving CHIN201 (not present in schedule - should produce no change):");
+    System.out.println("\nRemoving CHIN201 (not present in schedule - should produce no change):");
     s.removeCourse(chin201);
-    //System.out.println(s);
+    System.out.println(s);
     
+    System.out.println("\nAll courses in the schedule:");
     String[] names = s.getAll();
     for(int i=0; i < names.length; i++){
-     System.out.println(names[i]);     
+      System.out.println(names[i]);     
+    }
+    
+    phys107.hide();
+    math215.hide();
+    System.out.println("\nVisible courses: (should be only CS230 and POL3221)");
+    String[] vis = s.getVisibleArray();
+    for (int i=0; i < vis.length; i++){
+     System.out.println(vis[i]); 
     }
   }
 }

@@ -159,26 +159,7 @@ public class OrganizerPanel extends JPanel{
     schedule.setMinimumSize(new Dimension(table.getWidth(), table.getHeight()));
     return schedule;
   }
-  
-  //replace with java.util.Arrays.asList(rowNames).indexOf(time)
-  private int getRowIndex(String time){
-    int index = -1;
-    for(int i=0; i<rowNames.length; i++){
-      if(rowNames[i].equals(time))
-        return i;
-    }
-    return index;
-  }
-  
-  //replace with java.util.Arrays.asList(columnNames).indexOf(day)
-  private int getColumnIndex(String day){
-    int index = -1;
-    for(int i=0; i<columnNames.length; i++){
-      if(columnNames[i].equals(day))
-        return i;
-    }
-    return index;
-  }
+ 
   
   private class ScheduleTableModel extends AbstractTableModel{
     
