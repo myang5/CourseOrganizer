@@ -14,15 +14,15 @@ public class Course{
   public String deptNum; // department and number e.g. CS230
   public String name;
   public String time;
-  public String notes;
   public LinkedList<Meeting> meetings;
   public int numMeetings; // the number of times per week that the course meets
   public boolean visible;
   public double credit;
+  public String notes;
   
   
   /**
-   * Constructor for Course class
+   * Constructor for Course class.
    * @param deptNum: the course department and number
    * @param name: the course name
    * @param time: the time the class starts
@@ -40,25 +40,26 @@ public class Course{
     visible = true;
     
     for (int i=0; i< days.length; i++){
-     addMeeting(days[i]);      
+      addMeeting(days[i]);      
     }
   }
   
   /**
-   * Constructor for Course class, with notes
+   * Constructor for Course class, with notes.
    * @param deptNum: the course department and number
    * @param name: the course name
    * @param time: the time the class starts
    * @param days: the days of the week the course meets on
+   * @param credit: the number of credits for this course 
    * @param notes: any additional information about the class
    */
   public Course(String deptNum, String name, String time, String[] days, double credit, String notes){
-   this(deptNum, name, time, days, credit); 
-   this.notes = notes;
+    this(deptNum, name, time, days, credit); 
+    this.notes = notes;
   }
   
   /**
-   * Returns the course department and number 
+   * Returns the course department and number. 
    * @return the course department and number
    */ 
   public String getDeptNum(){
@@ -66,7 +67,7 @@ public class Course{
   }
   
   /**
-   * Returns the course name
+   * Returns the course name.
    * @return the course name
    */
   public String getName(){
@@ -94,22 +95,22 @@ public class Course{
    * Sets the course visibility to true.
    */
   public void show(){
-   visible = true; 
+    visible = true; 
   }
   
   /**
    * Sets the course visibility to false.
    */ 
   public void hide(){
-   visible = false; 
+    visible = false; 
   }
   
   /**
-   * Returns a boolean value with the visibility of the course.
+   * Returns true if the course is visible.
    * @return if the course is visible
    */
   public boolean isVisible(){
-   return visible; 
+    return visible; 
   }
   
   /**
@@ -117,7 +118,7 @@ public class Course{
    * @return the number of credits
    */
   public double getCredits(){
-   return credit; 
+    return credit; 
   }
   
   /**
@@ -125,7 +126,7 @@ public class Course{
    * @return the notes
    */
   public String getNotes(){
-   return notes;    
+    return notes;    
   }
   
   /**
@@ -133,7 +134,7 @@ public class Course{
    * @return the meeting list
    */ 
   public LinkedList<Meeting> getMeetings(){
-   return meetings;   
+    return meetings;   
   }
   
   /**
@@ -146,14 +147,14 @@ public class Course{
     boolean add = true;
     
     for (int i=0; i < meetings.size(); i++){
-     Meeting current = meetings.get(i);
-     if (current.getDay() == day){
-      add = false; 
-     }
+      Meeting current = meetings.get(i);
+      if (current.getDay() == day){
+        add = false; 
+      }
     }
     
     if(add){
-     meetings.add(temp); 
+      meetings.add(temp); 
     }
   }
   
@@ -166,7 +167,7 @@ public class Course{
     for (int i=0; i < meetings.size(); i++){
       Meeting current = meetings.get(i);
       if (current.getDay() == day){
-       meetings.remove(current); 
+        meetings.remove(current); 
       }
     }
   }
@@ -192,7 +193,7 @@ public class Course{
     s+= "\nCredits: " + credit;
     
     if(!notes.equals("")){
-     s +="\n" + notes; 
+      s +="\n" + notes; 
     }
     return s;
   }

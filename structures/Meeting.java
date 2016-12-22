@@ -10,7 +10,7 @@ public class Meeting {
   private String time;
   
   /**
-   * Constructor for Meeting class: requires day and time
+   * Constructor for Meeting class: requires day and time.
    * @param day: the day the meeting occurs
    * @param time: the time the meeting occurs
    */ 
@@ -38,14 +38,14 @@ public class Meeting {
   
   /**
    * Returns a string representation of the meeting.
+   * @return the string representation of the meeting
    */ 
   public String toString(){
     return "Meeting occurs on: " + day + " at " + time; 
-    
   }
   
   /**
-   * Main driver method for testing purposes 
+   * Main driver method for testing purposes. 
    */ 
   public static void main(String[] args){
     Meeting test1 = new Meeting("Wednesday", "8:30-9:40");

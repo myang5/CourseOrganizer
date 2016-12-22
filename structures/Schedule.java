@@ -12,7 +12,7 @@ public class Schedule{
   Hashtable<String, Course> sch;
   
   /*
-   * Constructor for schedule class
+   * Constructor for schedule class.
    */ 
   public Schedule(){
     sch = new Hashtable<String, Course>(20);  
@@ -117,6 +117,8 @@ public class Schedule{
    */
   public String[] getAll(){
     Set temp =  sch.keySet();
+    
+    //casting all keys to strings
     Object[] s = temp.toArray(new String[0]);
     String[] result = new String[s.length];
     
@@ -147,7 +149,7 @@ public class Schedule{
   }
   
   /**
-   * Returns a list of all visible department names and numbers
+   * Returns a list of all visible department names and numbers.
    * @return the visible course names and numbers in array form
    */
   public String[] getVisibleArray(){
@@ -227,46 +229,46 @@ public class Schedule{
     Course pol221 = new Course("POL3221", "World Politics", "11:10-12:20", tf, 1);
     Course chin201 = new Course("CHIN201", "Intermediate Chinese", "11:10", mwth, 1.25);
     
-    //System.out.println("\nAdding the first course:");
+    System.out.println("\nAdding the first course:");
     s.addCourse(cs230);
-    //System.out.println(s);
+    System.out.println(s);
     
-    //System.out.println("\nAdding additional courses:");
+    System.out.println("\nAdding additional courses:");
     s.addCourse(math215);
     s.addCourse(phys107);
     s.addCourse(rel263);
     s.addCourse(pol221);
-    //System.out.println(s);
+    System.out.println(s);
     
-    //System.out.println("\nTrying to add CS230 again (should overwrite):");
+    System.out.println("\nTrying to add CS230 again (should overwrite):");
     s.addCourse(cs230);
-    //System.out.println(s);
+    System.out.println(s);
     
-    //System.out.println("\nRemoving REL263:");
+    System.out.println("\nRemoving REL263:");
     s.removeCourse(rel263);
-    //System.out.println(s);
+    System.out.println(s);
     
-    //System.out.println("\nRemoving CHIN201 (not present in schedule - should produce no change):");
+    System.out.println("\nRemoving CHIN201 (not present in schedule - should produce no change):");
     s.removeCourse(chin201);
-    //System.out.println(s);
+    System.out.println(s);
     
-    //System.out.println("\nAll courses in the schedule:");
+    System.out.println("\nAll courses in the schedule:");
     String[] names = s.getAll();
     for(int i=0; i < names.length; i++){
-      //System.out.println(names[i]);     
+      System.out.println(names[i]);     
     }
     
     phys107.hide();
     math215.hide();
-    //System.out.println("\nVisible courses: (should be only CS230 and POL3221)");
+    System.out.println("\nVisible courses: (should be only CS230 and POL3221)");
     String[] vis = s.getVisibleArray();
     for (int i=0; i < vis.length; i++){
-      //System.out.println(vis[i]); 
+      System.out.println(vis[i]); 
     }
     
-    //System.out.println("\nTesting saving the visible in a file");
+    System.out.println("\nTesting saving the visible in a file");
     s.saveVisible("test.txt");
-    //System.out.println("File saved as 'test.txt'.");
+    System.out.println("File saved as 'test.txt'.");
     
     System.out.println("\nTesting reading in from a file (reading in from test.txt):");
     Schedule s1 = new Schedule("test.txt");
