@@ -1,6 +1,6 @@
-
 /** 
  * FILE NAME: OrganizerPanel.java
+ * WHO: Midori Yang
  * WHAT: Sets up the OrganizerPanel as well as the createCourse window for entering
  * new courses
  */

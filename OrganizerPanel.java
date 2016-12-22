@@ -20,7 +20,7 @@ public class OrganizerPanel extends JPanel{
   private JButton courseButton, exportButton, saveButton, cancelButton;
   private JTable table;
   private JTextField code, name, notes;
-  private JComboBox timeOpts;
+  private JComboBox timeOpts, creditOpts;
   private JPanel list, schedule, buttons, courseEnter, days;
   private String[] courses, columnNames, rowNames;
   private int[][][] times;
@@ -32,19 +32,23 @@ public class OrganizerPanel extends JPanel{
     
     mainSchedule = new Schedule();
     
-//    String[] c1Days = {"Mon","Tues","Thurs","Fri"};
-//    Course c1 = new Course("JPN 201","Intermediate Japanese","11:10 - 12:20", c1Days);
-//    String[] c2Days = {"Tues","Fri"};
-//    Course c2 = new Course("CS 230","Data Structures","9:50 - 11:00",c2Days);
-//    String[] c3Days = {"Tues","Fri"};
-//    Course c3 = new Course("CS 240","Introduction to Machine Organization","1:30 - 2:40",c3Days);
-//    String[] c4Days = {"Mon","Thurs"};
-//    Course c4 = new Course("CS 320","Tangible User Interfaces","1:30 - 2:40", c4Days);
-//    
-//    mainSchedule.addCourse(c1);
-//    mainSchedule.addCourse(c2);
-//    mainSchedule.addCourse(c3);
-//    mainSchedule.addCourse(c4);
+    String[] c1Days = {"Mon","Tues","Thurs","Fri"};
+    Course c1 = new Course("JPN 201","Intermediate Japanese","11:10 - 12:20", c1Days, 1.0);
+    String[] c2Days = {"Tues","Fri"};
+    Course c2 = new Course("CS 230","Data Structures","9:50 - 11:00",c2Days, 1.0);
+    String[] c3Days = {"Tues","Fri"};
+    Course c3 = new Course("CS 240","Introduction to Machine Organization","1:30 - 2:40",c3Days, 1.0);
+    String[] c4Days = {"Mon","Thurs"};
+    Course c4 = new Course("CS 320","Tangible User Interfaces","1:30 - 2:40", c4Days, 1.0);
+    Course c5 = new Course("CS Test","Test","1:30 - 2:40", c4Days, 1.0);
+    Course c6 = new Course("CS Test2","Test2","1:30 - 2:40", c4Days, 1.0);
+    
+    mainSchedule.addCourse(c1);
+    mainSchedule.addCourse(c2);
+    mainSchedule.addCourse(c3);
+    mainSchedule.addCourse(c4);
+    mainSchedule.addCourse(c5);
+    mainSchedule.addCourse(c6);
     
     columnNames = new String[] {"","Mon", "Tues", "Wed", "Thurs", "Fri"};
     rowNames = new String[] {"8:30 - 9:40","9:50 - 11:00","11:10 - 12:20",
@@ -87,15 +91,15 @@ public class OrganizerPanel extends JPanel{
     list.setMinimumSize(new Dimension(500,200));
     radioC = new GridBagConstraints();
     String[] keys = mainSchedule.getAll();
-//    for(String key: keys){
-//      Course co = mainSchedule.getCourse(key);
-//      JCheckBox checkbox = new JCheckBox(co.getName());
-//      checkbox.addItemListener(new CheckBoxListener(co.getDeptNum()));
-//      checkbox.setSelected(true);
-//      radioC.gridx = 1;
-//      radioC.anchor = GridBagConstraints.FIRST_LINE_START;
-//      list.add(checkbox,radioC);
-//    }
+    for(String key: keys){
+      Course co = mainSchedule.getCourse(key);
+      JCheckBox checkbox = new JCheckBox(co.getDeptNum() + ": " + co.getName());
+      checkbox.addItemListener(new CheckBoxListener(co.getDeptNum()));
+      checkbox.setSelected(true);
+      radioC.gridx = 1;
+      radioC.anchor = GridBagConstraints.FIRST_LINE_START;
+      list.add(checkbox,radioC);
+    }
     return list;
   }
   
@@ -111,33 +115,90 @@ public class OrganizerPanel extends JPanel{
     }
     
     public void itemStateChanged(ItemEvent e){
-//      //get index of the label
-//      int index = -1;
-//      for(int i=0; i<courses.length; i++){
-//        if(courses[i].equals(label)) index = i;
-//      }
-//      System.out.println(index);
+      
+      //System.out.println("Checkbox: " + label);
       
       Course co = mainSchedule.getCourse(label);
-      System.out.println(co);
       LinkedList<Meeting> meets = co.getMeetings();
       
       if (e.getStateChange() == ItemEvent.SELECTED){
-        String code = co.getDeptNum();
-        System.out.println(code);
-        
+        //System.out.println("selected");
         for(Meeting meet: meets){
           int row = java.util.Arrays.asList(rowNames).indexOf(meet.getTime());
           int col = java.util.Arrays.asList(columnNames).indexOf(meet.getDay());
-          table.setValueAt(code, row, col);
+          String currentVal = (String) table.getValueAt(row,col);
+          
+          //if the cell value is null there are no classes there yet
+          //which means no conflicts
+          if(currentVal==null){
+            table.setValueAt("<html>" + label + "</html>", row, col);
+            //System.out.println("Current val: " + table.getValueAt(row,col));
+          }
+          
+          //if there is already a value in the cell, handle class conflicts
+          else{
+            String temp = currentVal.split("<html>")[1];
+            temp = temp.split("</html>")[0];
+            String[] codes = temp.split("<br>");
+            String newVal = "<html>";
+            for (int i=0; i<codes.length; i++){
+              newVal += codes[i] + "<br>";
+            }
+            newVal += label + "</html>";
+            
+            //System.out.println("Setting value to " + newVal);
+            table.setValueAt(newVal, row, col);
+            updateRowHeights();
+            
+          }
         } 
       }
+      
+      
       else if (e.getStateChange() == ItemEvent.DESELECTED){
-        System.out.println(" deselected");
+        //System.out.println("deselected");
         for(Meeting meet: meets){
           int row = java.util.Arrays.asList(rowNames).indexOf(meet.getTime());
           int col = java.util.Arrays.asList(columnNames).indexOf(meet.getDay());
-          table.setValueAt("", row, col);
+          String currentVal = (String) table.getValueAt(row,col);
+          //System.out.println("Val in cell: " + currentVal);
+          String temp = currentVal.split("<html>")[1];
+          temp = temp.split("</html>")[0];
+          //System.out.println(temp);
+          String[] codes = temp.split("<br>");
+          
+          
+          //if there is only one code in the cell, there are no conflicts to solve
+          //can set cell to blank safely
+          if(codes.length==1){
+            //needs to be set to null to correspond with code in SELECTED
+            table.setValueAt(null, row, col);
+            //System.out.println("Current val: " + table.getValueAt(row,col));
+          }
+          
+          //else, remove the class that was unchecked and update the cell
+          else{
+            ArrayList<String> codesList = new ArrayList<String>(Arrays.asList(codes));
+            codesList.remove(label);
+            String newVal = "<html>";
+            for (int i=0; i<codesList.size(); i++){
+              System.out.println(codesList.get(i));
+              //if code is last only add code
+              if(i==codesList.size()-1) {
+                //System.out.println("doing 2");
+                newVal += codesList.get(i);
+                //for all other codes also add line break
+              } else {
+                //System.out.println("doing 3");
+                newVal += codesList.get(i) + "<br>";
+              }
+            }
+            newVal += "</html>";
+            
+            //System.out.println("Setting value to " + newVal);
+            table.setValueAt(newVal, row, col);
+            updateRowHeights();
+          }
         } 
       }
     }
@@ -149,9 +210,9 @@ public class OrganizerPanel extends JPanel{
   //initialize table and panel
   private JPanel makeSchedule(){
     table = new JTable(new ScheduleTableModel());
+    table.setDefaultRenderer(String.class, new ColorRenderer());
     table.getColumnModel().getColumn(0).setMinWidth(90);
     table.setGridColor(Color.black);
-    //table.setIntercellSpacing(new Dimension(10,10));
     
     schedule = new JPanel(new BorderLayout());
     schedule.add(table.getTableHeader(), BorderLayout.PAGE_START);
@@ -159,7 +220,7 @@ public class OrganizerPanel extends JPanel{
     schedule.setMinimumSize(new Dimension(table.getWidth(), table.getHeight()));
     return schedule;
   }
- 
+  
   
   private class ScheduleTableModel extends AbstractTableModel{
     
@@ -179,10 +240,13 @@ public class OrganizerPanel extends JPanel{
       return columnNames[col];
     }
     
+    public Class<?> getColumnClass(int columnIndex) {
+      return String.class;
+    }
+    
     //must be implemented
     public Object getValueAt(int row, int col) {
       if(col==0) return rowNames[row];
-      else if(data[row][col]==null) return "";
       else{return data[row][col];}
     }
     
@@ -195,7 +259,41 @@ public class OrganizerPanel extends JPanel{
       return false;
     }
     
+    
   }
+  
+  
+  
+  static class ColorRenderer extends DefaultTableCellRenderer {
+    
+    @Override
+    public Component getTableCellRendererComponent(JTable table, Object value,
+                                                   boolean isSelected, boolean hasFocus, int row, int column) {
+      Component c = super.getTableCellRendererComponent(table, value, isSelected,
+                                                        hasFocus, row, column);
+      String val = (String) table.getValueAt(row,column);
+      if(val != null && val.contains("<br>")){
+        c.setForeground(Color.RED);
+      }
+      else{
+        c.setForeground(Color.BLACK);
+      }
+      return c;
+    }
+  }
+  
+  
+  private void updateRowHeights(){
+    for (int row = 0; row < table.getRowCount(); row++){
+      int rowHeight = table.getRowHeight();
+      for (int column = 0; column < table.getColumnCount(); column++){
+        Component comp = table.prepareRenderer(table.getCellRenderer(row, column), row, column);
+        rowHeight = Math.max(rowHeight, comp.getPreferredSize().height);
+      }
+      table.setRowHeight(row, rowHeight);
+    }
+  }
+  
   
   
   /*--------------------------------------------------------------------
@@ -248,13 +346,20 @@ public class OrganizerPanel extends JPanel{
     c.gridy = 3;
     courseEnter.add(label4, c);
     
-    JLabel label5= new JLabel("Notes (optional)");
+    JLabel label5= new JLabel("Credits");
+    label4.setMaximumSize(new Dimension(70,20));
+    label4.setHorizontalAlignment(JLabel.RIGHT);
+    c.gridx = 0;
+    c.gridy = 4;
+    courseEnter.add(label5, c);
+    
+    JLabel label6= new JLabel("Notes (optional)");
     label5.setMaximumSize(new Dimension(70,20));
     label5.setHorizontalAlignment(JLabel.RIGHT);
     c.gridx = 0;
-    c.gridy = 4;
+    c.gridy = 5;
     c.insets = new Insets(10,10,10,10);//top, left, bottom, right
-    courseEnter.add(label5, c);
+    courseEnter.add(label6, c);
     
     code = new JTextField("ex. CS 230", 20);
     c.gridx = 1;
@@ -277,16 +382,22 @@ public class OrganizerPanel extends JPanel{
     courseEnter.add(days, c);
     
     
-    String[] timeStrings = {"8:30 - 9:40","9:50 - 11:00","11:10 - 12:20",
+    String[] timeStrings = {"","8:30 - 9:40","9:50 - 11:00","11:10 - 12:20",
       "12:20 - 1:20", "1:30 - 2:40","2:50 - 4:00"};
     timeOpts = new JComboBox(timeStrings);
     c.gridx = 1;
     c.gridy = 3;
     courseEnter.add(timeOpts, c);
     
-    notes = new JTextField(20);
+    String[] creditStrings = {"", "1.0", "1.25"};
+    creditOpts = new JComboBox(creditStrings);
     c.gridx = 1;
     c.gridy = 4;
+    courseEnter.add(creditOpts, c);
+    
+    notes = new JTextField(20);
+    c.gridx = 1;
+    c.gridy = 5;
     courseEnter.add(notes, c);
     
     JPanel buttons = new JPanel(new GridBagLayout());
@@ -307,7 +418,7 @@ public class OrganizerPanel extends JPanel{
     buttons.add(cancelButton, c2);
     c.fill = GridBagConstraints.HORIZONTAL;
     c.gridx = 0;
-    c.gridy = 5;
+    c.gridy = 6;
     c.gridwidth = 2;
     courseEnter.add(buttons, c);
     
@@ -324,41 +435,7 @@ public class OrganizerPanel extends JPanel{
     createCourse.setVisible(false);
     
   }
-  
-  
-  //gets the course information and creates a Course object
-  private void saveCourse(){
-    String codeStr = code.getText();
-    String nameStr = name.getText();
-    
-    //get an exactly-sized list of which days were selected (dayStrs)
-    LinkedList<String> dayStrsTemp = new LinkedList<String>();
-    Component[] comps = days.getComponents();
-    for(int i=0; i<comps.length; i++){
-      JCheckBox comp = (JCheckBox) comps[i];
-      if(comp.isSelected())
-        dayStrsTemp.add(comp.getLabel());
-    }
-    String[] dayStrs = new String[dayStrsTemp.size()];
-    for(int j=0; j<dayStrsTemp.size(); j++){
-      dayStrs[j] = dayStrsTemp.get(j);
-    }
-    
-    String timeStr = String.valueOf(timeOpts.getSelectedItem());
-    String notesStr = notes.getText();
-    
-    Course course = new Course(codeStr, nameStr, timeStr, dayStrs, notesStr);
-    System.out.println(course);
-    
-    mainSchedule.addCourse(course);
-    
-    JCheckBox checkbox = new JCheckBox(course.getName());
-    checkbox.addItemListener(new CheckBoxListener(course.getDeptNum()));
-    checkbox.setSelected(true);
-    radioC.gridx = 1;
-    radioC.anchor = GridBagConstraints.FIRST_LINE_START;
-    list.add(checkbox,radioC);
-  }
+ 
   
   //resets the info entry fields in the course entry JFrame
   private void resetCourseEnter(){
@@ -384,8 +461,54 @@ public class OrganizerPanel extends JPanel{
       }
       if(e.getSource()==saveButton){
         System.out.println("save");
-        saveCourse();
-        createCourse.setVisible(false);
+        String codeStr = code.getText();
+        String nameStr = name.getText();
+        
+        //get an exactly-sized list of which days were selected (dayStrs)
+        LinkedList<String> dayStrsTemp = new LinkedList<String>();
+        Component[] comps = days.getComponents();
+        for(int i=0; i<comps.length; i++){
+          JCheckBox comp = (JCheckBox) comps[i];
+          if(comp.isSelected())
+            dayStrsTemp.add(comp.getLabel());
+        }
+        String[] dayStrs = new String[dayStrsTemp.size()];
+        for(int j=0; j<dayStrsTemp.size(); j++){
+          dayStrs[j] = dayStrsTemp.get(j);
+        }
+        
+        String timeStr = String.valueOf(timeOpts.getSelectedItem());
+        String notesStr = notes.getText();
+        double credit = 0;
+        try{
+          credit = Double.parseDouble(String.valueOf(creditOpts.getSelectedItem()));
+        }
+        catch (NumberFormatException f){}
+        
+        //don't let person make course while necessary information is not inputted
+        //notes are optional
+        if (codeStr.equals("") || codeStr.equals("ex. CS 230") ||
+            nameStr.equals("") || nameStr.equals("ex. Data Structures") ||
+            timeStr.equals("") ||
+            dayStrs.length==0 || credit==0) {
+          JOptionPane.showMessageDialog(null,"You did not enter one or more of the fields.");
+        }
+        
+        else{
+          Course course = new Course(codeStr, nameStr, timeStr, dayStrs, credit, notesStr);
+          System.out.println(course);
+          mainSchedule.addCourse(course);
+          
+          JCheckBox checkbox = new JCheckBox(course.getDeptNum() + ": " + course.getName());
+          checkbox.addItemListener(new CheckBoxListener(course.getDeptNum()));
+          checkbox.setSelected(true);
+          radioC.gridx = 1;
+          radioC.anchor = GridBagConstraints.FIRST_LINE_START;
+          list.add(checkbox,radioC);
+          
+          createCourse.setVisible(false);
+        }
+        
       }
       if(e.getSource()==cancelButton){
         System.out.println("cancel");
